@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -26,7 +27,14 @@ func main() {
 	} else {
 		prefix = ""
 	}
-	
+	var out *os.File = nil
+	if len(flag.Args()) > 2 {
+		out, err = os.Create(flag.Args()[2])
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer out.Close()
+	}
 	var index map[string]string
 	index = make(map[string]string)
 	var duplicated map[string][]string
@@ -67,7 +75,11 @@ func main() {
 			if _, ok := sha[val]; !ok {
 				sha[val] = v
 			} else {
-				log.Println("Duplicated sha:", sha[val], " ", v)
+				if out == nil {
+					log.Println("Duplicated sha:", sha[val], " ", v)
+				} else {
+					out.WriteString(fmt.Sprintf("\"%s\" \"%s\"\n", sha[val], v))
+				}
 			}
 		}
 	}

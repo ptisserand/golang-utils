@@ -1,0 +1,27 @@
+.PHONY: clean all setup 
+
+PROG_EXE=$(PROG).exe
+SRC=$(PROG).go
+
+GO_PATH=$(PWD)/gopath
+GO_OPTS=GOPATH="$(GO_PATH)"
+
+NO_SETUP=0
+
+%: %.go
+	$(GO_OPTS) go build -o $@ $<
+
+%.exe: %.go
+	$(GO_OPTS) GOOS=windows GOARCH=386 go build -o $@ $<
+
+ifeq ($(NO_SETUP), 0)
+all: setup $(PROG) $(PROG_EXE)
+else
+all: $(PROG) $(PROG_EXE)
+endif
+
+clean:
+	@-rm $(PROG)
+	@-rm $(PROG_EXE)
+
+

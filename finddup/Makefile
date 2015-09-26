@@ -1,3 +1,3 @@
-finddup: finddup.go
-	go build -o $@ $<
+PROG=finddup
 
+include ../Makefile.common

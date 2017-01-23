@@ -1,4 +1,4 @@
-SUBDIRS = finddup pushme
+SUBDIRS = finddup elfenstein pushme
 SUBCLEAN = $(addsuffix .clean, $(SUBDIRS))
 
 .PHONY: clean $(SUBCLEAN) subdirs $(SUBDIRS)
@@ -10,6 +10,6 @@ $(SUBDIRS):
 
 clean: $(SUBCLEAN)
 
-$(SUBCLEAN): 
+$(SUBCLEAN):
 	$(MAKE) -C $(@:.clean=) clean
 
